@@ -27,15 +27,18 @@ public class Main {
         System.out.printf("Please provide your age: ");
         int age = scanner.nextInt();
 
-        double basicCar = 29.99 * duration;
+        double totalPayment = totalCost(duration, firstOption, secondOption, thirdOption, age);
+        System.out.println("On " + pickupDate + " you will rent a total of " + totalPayment);
+    }
 
+    public static double totalCost(int duration, String opt1, String opt2, String opt3, int age){
+        //basic and optional choices
+        double basicCarRental = duration * 29.99;
+        double surcharge = age < 25 ? 1.3 : 1;
+        double optCost1 = opt1.equalsIgnoreCase("yes") ? 3.95 * duration : 0;
+        double optCost2 = opt2.equalsIgnoreCase("yes") ? 2.95 * duration : 0;
+        double optCost3 = opt3.equalsIgnoreCase("yes") ? 3.95 * duration : 0;
 
-        //filter the possible calculations from user response
-        if(firstOption.equalsIgnoreCase("no") && secondOption.equalsIgnoreCase("no") && thirdOption.equalsIgnoreCase("no") && (age > 25)){
-            System.out.printf("You pay this much: $%.2f", basicCar);
-        }
-        else if(firstOption.equalsIgnoreCase("yes") && secondOption.equalsIgnoreCase("no") && thirdOption.equalsIgnoreCase("no") && (age > 25)){
-            System.out.printf("You pay this much: ", basicCar + (duration * 3.95));
-        }
+        return ((basicCarRental * surcharge) + (optCost1) + (optCost2) + (optCost3));
     }
 }
