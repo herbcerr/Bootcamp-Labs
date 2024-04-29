@@ -100,6 +100,7 @@ public class Screens {
         switch (validateInput()) {
             case 1:
                 System.out.print("Enter the name of the product: ");
+                scanner.nextLine();
                 String productName = scanner.nextLine().trim();
                 for (Product product: getProduct()){
                     if(product.getName().equalsIgnoreCase(productName)){
@@ -112,10 +113,11 @@ public class Screens {
                 break;
             case 2:
                 System.out.print("Enter the Max price to search: ");
+                scanner.nextLine();
                 double productPrice = scanner.nextDouble();
                 for (Product product: getProduct()){
                     if(product.getPrice() < productPrice){
-                        System.out.printf("\nResult: %s, price: %.2f",product.getName(), product.getPrice());
+                        System.out.printf("\nResult: %s, price: $%.2f",product.getName(), product.getPrice());
                     }
                 }
                 addProduct();
@@ -129,7 +131,8 @@ public class Screens {
                 String productDepartment = scanner.nextLine().trim();
                 for (Product product: getProduct()){
                     if(product.getDepartment().equalsIgnoreCase(productDepartment)){
-                        System.out.printf("Result: %s, Department: %s\n",product.getName(), product.getDepartment());
+                        System.out.printf("Name: %s|Price: %.2f|Department: %s\n",
+                                product.getName(), product.getPrice(), product.getDepartment());
                     }
                 }
                 addProduct();
@@ -150,10 +153,10 @@ public class Screens {
             System.out.println("Enter the product NAME you would like to add?");
             String name = scanner.nextLine();
             for (Product product: getProduct()){
-                if(product.getName().equalsIgnoreCase(name)){
+                if(name.equalsIgnoreCase(product.getName())){
                     cart.add(product);
                     for(Product showCart : cart){
-                        System.out.printf("Name: %s|Price: %.2f|Department: %s\n",
+                        System.out.printf("You added: %s|Price: $%.2f|Department: %s\n",
                                 showCart.getName(), showCart.getPrice(), showCart.getDepartment());
                     }
                 }
@@ -163,8 +166,20 @@ public class Screens {
             displayInventory();
         }
         else {
-            System.out.println("Don't quite understand...\n");
+            System.out.println("Don't quite understand...");
             addProduct();
+        }
+        System.out.println("Add more? (Yes / No)");
+        String more = scanner.nextLine();
+        if(more.equalsIgnoreCase("yes")){
+            addProduct();
+        }
+        else if (more.equalsIgnoreCase("no")) {
+            displayHomeInterface();
+        }
+        else {
+            System.out.println("Sorry don't quite understand... Redirecting you to home page...");
+            displayHomeInterface();
         }
     }
 
@@ -202,9 +217,14 @@ public class Screens {
     public static void getCart(ArrayList<Product> cart){
 
         for(Product inCart : cart){
-            System.out.printf("Name: %s|Price: %.2f|Department: %s\n",
+            System.out.printf("Name: %s|Price: $%.2f|Department: %s\n",
                     inCart.getName(), inCart.getPrice(), inCart.getDepartment());
         }
+        double sum = 0;
+        for(Product total : cart){
+            sum += total.getPrice();
+        }
+        System.out.printf("Total is : $%.2f\n", sum);
     }
     //input validation
     public int validateInput(){
@@ -224,8 +244,6 @@ public class Screens {
                 scanner.next();
             }
         }
-
-        System.out.println("You entered: " + number);
         return number;
     }
 }
